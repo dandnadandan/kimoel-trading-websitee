@@ -1,0 +1,228 @@
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import ProductCard from "./ProductCard";
+import { Button } from "@/components/ui/button";
+
+// Category images
+import electricalImage from "@/assets/ELECTRICAL.jpg";
+import mechanicalImage from "@/assets/MECHANICAL COMPONENTS.png";
+import pneumaticsImage from "@/assets/PNEUMATICS.png";
+import toolsImage from "@/assets/TOOLS.jpeg";
+
+// Product images
+import electricalSupplies from "@/assets/Electrical Supplies.jpg";
+import electricalPanel from "@/assets/Electrical Panel.png";
+import cableTray from "@/assets/Cable Tray.jpg";
+import acMotor from "@/assets/AC Motors and Gear Motors.png";
+import bearings from "@/assets/Bearing and Seal.jpg";
+import pneumaticsPart from "@/assets/Pneumatic Cylinder Accessories.jpg";
+import conveyor from "@/assets/Conveyor System.png";
+import jigs from "@/assets/Jigs and Fixtures.png";
+
+const Products = () => {
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [activeTap, setActiveTap] = useState<string | null>(null); // For mobile tap highlight
+
+  const categories = [
+    {
+      title: "Electrical",
+      slug: "electrical",
+      description:
+        "Electrical supplies and equipment including panels, cable trays, and more.",
+      image: electricalImage,
+    },
+    {
+      title: "Mechanical Components",
+      slug: "mechanical-components",
+      description:
+        "Industrial-grade motors, bearings, and seals for durability and precision.",
+      image: mechanicalImage,
+    },
+    {
+      title: "Automation & Pneumatics",
+      slug: "automation-pneumatics",
+      description:
+        "Pneumatic and automation parts designed for smooth control and efficiency.",
+      image: pneumaticsImage,
+    },
+    {
+      title: "Systems & Tooling",
+      slug: "systems-tooling",
+      description:
+        "Custom conveyor systems, jigs, and fixtures for industrial use.",
+      image: toolsImage,
+    },
+  ];
+
+  const subProducts: Record<
+    string,
+    { title: string; description: string; image: string; imageAlt: string }[]
+  > = {
+    Electrical: [
+      {
+        title: "Electrical Supply",
+        description: "Complete solutions for industrial and commercial use.",
+        image: electricalSupplies,
+        imageAlt: "Electrical supply",
+      },
+      {
+        title: "Electrical Panel",
+        description: "Durable and safe panels for power distribution.",
+        image: electricalPanel,
+        imageAlt: "Electrical panel",
+      },
+      {
+        title: "Cable Tray",
+        description: "Reliable cable trays for safe wiring management.",
+        image: cableTray,
+        imageAlt: "Cable tray",
+      },
+    ],
+    "Mechanical Components": [
+      {
+        title: "AC Motors and Gear Motors",
+        description: "Industrial-grade motors built for durability.",
+        image: acMotor,
+        imageAlt: "AC motor",
+      },
+      {
+        title: "Bearings & Seals",
+        description: "Durable bearings and seals for precision.",
+        image: bearings,
+        imageAlt: "Bearings and seals",
+      },
+    ],
+    "Automation & Pneumatics": [
+      {
+        title: "Pneumatic Cylinder Accessories",
+        description: "High-quality pneumatic parts for automation systems.",
+        image: pneumaticsPart,
+        imageAlt: "Pneumatics",
+      },
+    ],
+    "Systems & Tooling": [
+      {
+        title: "Conveyor System",
+        description: "Custom conveyor systems for industrial use.",
+        image: conveyor,
+        imageAlt: "Conveyor system",
+      },
+      {
+        title: "Jigs and Fixtures",
+        description: "Precision jigs and fixtures for manufacturing.",
+        image: jigs,
+        imageAlt: "Jigs and fixtures",
+      },
+    ],
+  };
+
+  const gridVariants = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.06 } },
+  };
+  const itemVariants = {
+    hidden: { opacity: 0, y: 14 },
+    visible: { opacity: 1, y: 0 },
+  };
+
+  return (
+    <section id="products" className="py-14 md:py-20 bg-muted/30 scroll-mt-24">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12">
+        <div className="text-center mb-10 md:mb-16">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-brand-blue-dark mb-3 md:mb-4">
+            Our Products
+          </h2>
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
+            Explore our range of electrical, mechanical, automation, and tooling
+            products.
+          </p>
+        </div>
+
+        {/* Category Grid */}
+        {!activeCategory && (
+          <motion.div
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-7xl mx-auto"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={gridVariants}
+          >
+            {categories.map((category) => (
+              <Link key={category.title} to={`/products/${category.slug}`}>
+                <motion.div
+                  whileHover={{ y: -6 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 22 }}
+                  variants={itemVariants}
+                >
+                  <div className="group text-left bg-white rounded-2xl overflow-hidden shadow-md transition-shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 md:hover:shadow-xl">
+                    <div className="aspect-[16/9] overflow-hidden">
+                      <img
+                        src={category.image}
+                        alt={category.title}
+                        className="w-full h-full object-cover transition-transform duration-300 md:group-hover:scale-105"
+                        loading="lazy"
+                      />
+                    </div>
+                    <div className="p-4 sm:p-5">
+                      <h3 className="text-lg sm:text-xl font-semibold text-brand-blue-dark md:group-hover:text-[#FFD700] transition-colors duration-300">
+                        {category.title}
+                      </h3>
+                      <p className="mt-1 text-sm sm:text-base text-gray-600">
+                        {category.description}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              </Link>
+            ))}
+          </motion.div>
+        )}
+
+        {/* Sub-products Grid */}
+        {activeCategory && (
+          <div className="mt-8 md:mt-12">
+            <div className="flex items-center justify-between flex-wrap gap-3 mb-6">
+              <Link to="/products">
+                <Button variant="outline" className="mb-2 sm:mb-0">
+                  ← Back to Categories
+                </Button>
+              </Link>
+              <h3 className="text-2xl sm:text-3xl font-bold text-brand-blue-dark text-center w-full sm:w-auto">
+                {activeCategory}
+              </h3>
+            </div>
+
+            <motion.div
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-7xl mx-auto"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              variants={gridVariants}
+            >
+              {subProducts[activeCategory].map((product, index) => (
+                <motion.div
+                  key={index}
+                  variants={itemVariants}
+                  whileHover={{ y: -6 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 22 }}
+                >
+                  <ProductCard
+                    title={product.title}
+                    description={product.description}
+                    image={product.image}
+                    imageAlt={product.imageAlt}
+                  />
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+};
+
+export default Products;
