@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider } from '@/contexts/AuthContext';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import Index from '@/pages/Index';
+import Products from '@/pages/Products';
 import CategoryPage from '@/pages/CategoryPage';
 import ProductDetail from '@/pages/ProductDetail';
 import Cart from '@/pages/Cart';
@@ -26,7 +27,7 @@ const App = () => (
       <Router>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/products" element={<CategoryPage />} />
+          <Route path="/products" element={<Products />} />
           <Route path="/products/:categorySlug" element={<CategoryPage />} />
           <Route path="/products/:categorySlug/:productSlug" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
